@@ -38,7 +38,7 @@ Funciones del semaforo:
 > – **semSignal()** : incrementa el valor del semáforo.
 
 
-#### ** Proceso de lectura: **
+##### Proceso de lectura
 
 
 1. El lector solicita la entrada a la sección crítica
