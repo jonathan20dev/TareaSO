@@ -63,22 +63,22 @@ void reader()
 	readCount++;
 
 	//No permite que un escritor entre a la sesión 🚫✍
-				if(readCount == 1)
-					semWait(wsem);
+			if(readCount == 1)
+				semWait(wsem);
 
 	//Permite la entrada a otros lectores, mientras haya uno en la sesión🙍‍♂️🙍‍♀️.
-			semSignal(x);
+		semSignal(x);
 
 	//El lector realiza la lectura 📖
-			READUNIT();
+		READUNIT();
 
 	//El lector actual realizó la lectura y ahora se retira 👋
-			semWait(x);
-			readCount--;
+		semWait(x);
+		readCount--;
 
 	//Permite que se escriba sobre la unidad, cuando no hay lectores. 🆗
-				if (readCount == 0)
-					semSignal(wsem);
+			if (readCount == 0)
+				semSignal(wsem);
 	semSignal(x);
     }
 }
