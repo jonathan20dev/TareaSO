@@ -58,28 +58,28 @@ semaphore x = 1, wsem = 1;
 void reader()
 {
     while (true){
-			//incrementa el número de lectores dentro de la sección crítica
-			semWait(x);
-			readCount++;
+	//incrementa el número de lectores dentro de la sección crítica
+	semWait(x);
+	readCount++;
 
-			//No permite que un escritor entre a la sesión 🚫✍
-						if(readCount == 1)
-							semWait(wsem);
+	//No permite que un escritor entre a la sesión 🚫✍
+				if(readCount == 1)
+					semWait(wsem);
 
-			//Permite la entrada a otros lectores, mientras haya uno en la sesión🙍‍♂️🙍‍♀️.
-					semSignal(x);
-
-			//El lector realiza la lectura 📖
-					READUNIT();
-
-			//El lector actual realizó la lectura y ahora se retira 👋
-					semWait(x);
-					readCount--;
-
-			//Permite que se escriba sobre la unidad, cuando no hay lectores. 🆗
-						if (readCount == 0)
-							semSignal(wsem);
+	//Permite la entrada a otros lectores, mientras haya uno en la sesión🙍‍♂️🙍‍♀️.
 			semSignal(x);
+
+	//El lector realiza la lectura 📖
+			READUNIT();
+
+	//El lector actual realizó la lectura y ahora se retira 👋
+			semWait(x);
+			readCount--;
+
+	//Permite que se escriba sobre la unidad, cuando no hay lectores. 🆗
+				if (readCount == 0)
+					semSignal(wsem);
+	semSignal(x);
     }
 }
 ```
@@ -102,9 +102,9 @@ semaphore x = 1, wsem = 1;
 void writer()
 {
     while (true){
-			semWait(wsem); //Un escritor solicita entrar a la sesión crítica
-			WRITEUNIT(); //El escritor realiza la escritura ✍
-			semSignal(wsem); //El escritor abandona la sesión crítica
+	semWait(wsem); //Un escritor solicita entrar a la sesión crítica
+	WRITEUNIT(); //El escritor realiza la escritura ✍
+	semSignal(wsem); //El escritor abandona la sesión crítica
     }
 }
 ```
