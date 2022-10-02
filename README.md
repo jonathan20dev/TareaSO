@@ -13,7 +13,7 @@
 ***Definición del problema***
 
 
-> A continuación examinaremos uno de los problemas más comunes que se plantean en el procesamiento concurrente, el problema del productor/consumidor consiste en asegurarse de que el productor no intente añadir datos al búfer si está lleno, y que el consumidor no intente eliminar datos de un búfer vacío
+> El problema del productor/consumidor consiste en asegurarse de que el productor no intente añadir datos al búfer si está lleno, y que el consumidor no intente eliminar datos de un búfer vacío.
 
 
 ***Restricciones del problema***
