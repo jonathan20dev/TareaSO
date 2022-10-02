@@ -118,3 +118,103 @@ void main()
 		parbegin (reader, writer);
 }
 ```
+
+###  Ejercicio 3: Productores y consumidores
+
+***Definición del problema***
+
+
+> A continuación examinaremos uno de los problemas más comunes que se plantean en el procesamiento concurrente, el problema del productor/consumidor consiste en asegurarse de que el productor no intente añadir datos al búfer si está lleno, y que el consumidor no intente eliminar datos de un búfer vacío
+
+
+***Restricciones del problema***
+
+
+	1. Solapamiento de las operaciones del buffer.
+	2. El productor no intente añadir datos al búfer si está lleno
+	3. El consumidor no intente eliminar datos de un búfer vacío.
+
+
+#### ***Analisis del código***
+
+
+##### Una solución incorrecta al problema del productor/consumidor de búferes infinitos
+
+
+		Se utilizan tres variables: n, s, delay
+
+
+> **Semaphore s:** El semáforo s se utiliza para imponer la exclusión mutua, el semáforo
+>
+>**Semaphore delay:** Delay se utiliza para forzar al consumidor a semEsperar si el buffer está vacío. 
+> 
+> **int n**; n es el tamaño del buffer
+
+
+Funciones del semaforo:
+
+
+> – **semWaitB()** : Antes de añadir el buffer
+>
+> – **semSignalB()** : Después para evitar que el consumidor (o cualquier otro productor) acceda al búfer durante la operación de añadir
+
+
+##### Producer
+```javascript
+
+	// n es el tamaño del buffer
+	int n;
+
+	//El semáforo s se utiliza para imponer la exclusión mutua, el semáforo delay se utiliza para
+	// forzar al consumidor a semEsperar si el buffer está vacío.
+	binary_semaphore s = 1, delay = 0;
+
+	void producer()
+	{
+		while (true) {
+			produce();
+
+			//El consumidor comienza a esperar a que se produzca el primer elemento
+			semWaitB(s);
+			append();
+
+			//El productor ha incrementado n antes de que el consumidor pueda probarlo
+			n++;
+
+			//Si n = 1, entonces el buffer estaba vacío justo antes de este el productor realiza semSignalB (delay).
+			if (n==1) semSignalB(delay);
+				semSignalB(s);
+		}
+	}
+```
+
+
+##### Consumer
+----
+
+```javascript
+	void consumer()
+	{	
+		// El consumer falla al ejecutar la operación semWaitB porque agotó el buffer y puso n a 0
+		semWaitB(delay);
+		while (true) {
+			semWaitB(s); //Se coloca 1 al buffer
+			take();
+			n--; //Se coloca -1 a n porque el consumer ha consumido un elemendo del buffer que no existe
+			semSignalB(s);
+			consume();
+
+			//Cuando se ha agotado el buffer, necesita volver a restablecer el semaforo, por lo que se 
+			// ve obligado a esperar hasta que el producer haya colocado mas elementos en el buffer, por eso la validacion n==0.
+			if (n==0) semWaitB(delay);
+		}
+	}
+
+	void main()
+	{
+		n = 0; //El buffer se iguala a 0
+		parbegin (producer, consumer); //Corre en paralelo la funcion de producer y consumer
+	}
+```
+
+
