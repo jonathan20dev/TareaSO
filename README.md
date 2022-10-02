@@ -1,5 +1,12 @@
 #  Tarea: Analizar el capítulo 5 del libro Operating Systems: Internals and Design Principles de William Stallings, 9na edición.
 
+>
+> Jonathan Mendoza
+> 
+> Kimberly Vargas
+> 
+> Johan Zamora
+> 
 
 ##  Ejercicio 1: Productores y consumidores
 
