@@ -1,4 +1,4 @@
-#  Tarea: Analizar el capítulo 5 del libro
+#  Tarea: Analizar el capítulo 5 del libro Operating Systems: Internals and Design Principles de William Stallings, 9na edición.
 
 
 ##  Ejercicio 1: Productores y consumidores
